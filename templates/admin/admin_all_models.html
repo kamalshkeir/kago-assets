@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Website Admin Page">
+  {{template "admin_head"}}
+  <link rel="stylesheet" href="/static/admin/jodit_editor.min.css">
+  <title>Admin - {{.model_name}}</title>
+</head>
+<body>
+{{ template "admin_nav" . }}
+{{$dbType := .dbType}}
+<div class="wrapper">
+  <div class="head-container">
+    <a href="/admin">
+      <h1 id="model-name" data-model="{{.model_name}}">{{.model_name}}</h1>
+    </a>
+    
+    <div class="svgs">
+      <label for="import" style="display: none;"></label>
+      <input type="file" id="import" style="display: none;">
+      <a href="#" aria-label="Import">
+        <svg id="btn-import" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-import" class="svg-inline--fa fa-file-import fa-w-16" role="img" viewBox="0 0 512 512">
+          
+          <path fill="currentColor" d="M16 288c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h112v-64zm489-183L407.1 7c-4.5-4.5-10.6-7-17-7H384v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-153 31V0H152c-13.3 0-24 10.7-24 24v264h128v-65.2c0-14.3 17.3-21.4 27.4-11.3L379 308c6.6 6.7 6.6 17.4 0 24l-95.7 96.4c-10.1 10.1-27.4 3-27.4-11.3V352H128v136c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H376c-13.2 0-24-10.8-24-24z"/></svg>
+      </a>
+      <a href="#" aria-label="Export">
+        <svg id="btn-export" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-export" class="svg-inline--fa fa-file-export fa-w-18" role="img" viewBox="0 0 576 512"><path fill="currentColor" d="M384 121.9c0-6.3-2.5-12.4-7-16.9L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128zM571 308l-95.7-96.4c-10.1-10.1-27.4-3-27.4 11.3V288h-64v64h64v65.2c0 14.3 17.3 21.4 27.4 11.3L571 332c6.6-6.6 6.6-17.4 0-24zm-379 28v-32c0-8.8 7.2-16 16-16h176V160H248c-13.2 0-24-10.8-24-24V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V352H208c-8.8 0-16-7.2-16-16z"/></svg>
+      </a>
+      <a href="#" aria-label="Create">
+        <svg id="btn-create" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/></svg>
+      </a>
+    </div>
+    
+  </div>
+  {{$columns := .columns}}
+  <div class="table-container">
+    <table class="table">
+        <thead>
+          <tr>
+              {{range $col,$type := $columns}}
+                <th scope="col">{{$col}}</th>
+              {{end}}
+              <th scope="col">DELETE</th>
+          </tr>
+        </thead>
+
+        {{$i := 0}}
+        <tbody class="tbody">
+          {{range .rows}}
+          <tr>
+            {{range $key,$value := .}}      
+              {{if eq $key "id" "_id" "Id" "ID" }}
+                <td>
+                  <p style="overflow-wrap:break-word;max-width: 20vw;">
+                    <a href="/admin/get/{{$.model_name}}/{{$value}}">{{$value}}</a>
+                  </p>
+                </td>
+              {{else if eq $key "image" "photo" "img" "url"}}
+                <td style="max-width: 20vw;">
+                  <img src="{{$value}}" alt="image">
+                </td>
+              {{else if and (startWith (index $columns $key) "int") (startWith $key "is") (isBool $value)}}
+                <td>
+                  {{$i = inc $i}}
+                  <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if isTrue $value}}checked{{end}} disabled>
+                  <label style="display: none;" for="check-{{$i}}" >Checkbox</label>          
+                </td>
+              {{else if and (startWith (index $columns $key) "str") (startWith $key "is") (isBool $value)}}
+                <td>
+                  {{$i = inc $i}}
+                  <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if isTrue $value}}checked{{end}} disabled>
+                  <label style="display: none;" for="check-{{$i}}" >Checkbox</label>          
+                </td>
+              {{else}}
+                  <td>
+                    <p style="overflow-wrap:break-word;max-width: 20vw;">
+                      {{truncate $value 50}}
+                    </p>
+                  </td>
+              {{end}} 
+            {{end}}
+            <td>
+              <button class="btn btn-danger deleteBtn" data-id="{{.id}}">X</button>
+            </td>
+          </tr>
+          {{end}}      
+        </tbody>
+      </table>
+      <div class="box-inf-scroll"></div>
+  </div>
+  
+</div>
+
+
+
+<div class="modal">
+  <div class="head">
+    <h1>Create {{.model_name}}</h1>
+    <button class="btn btn-close" style="border-radius: 10px;">X</button>
+  </div>
+  
+  <form id="myform">
+      {{range $col,$type := .columns}}
+      <div class="form-group">
+        {{if eq $col "id" "ID" "Id" "_id"}}
+        {{else}}
+          <label for="{{$col}}">{{$col}}:</label><br>
+        {{end}}
+
+        {{if eq $col "id" "ID" "Id" "_id"}}
+        {{else if or (contains $type "timestamp") (finishWith $col "at")}}
+        <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
+        {{else if eq $col "uuid"}}
+        <input name="{{$col}}" id="{{$col}}" type="text" class='form-control input' value="{{generateUUID}}" disabled>
+        {{else if eq $col "password"}}
+        <input name="{{$col}}" id="{{$col}}" type="password" class='form-control input'>
+        {{else if or (eq $type "text") (contains $col "content" "body")}}
+        <div id="editor" data-key="{{$col}}" data-val=""></div>
+        {{else if and (startWith $col "is") (startWith $type "int")}}
+        <div class="form-check form-switch">
+          <input style="height: 30px;" type="checkbox" name="{{$col}}" id="{{$col}}" class="form-check-input input">
+        </div>
+        {{else}}
+          <input type="text" id="{{$col}}" name="{{$col}}" class='form-control input'>
+        {{end}}       
+      </div>
+      <br>
+      {{end}}
+    <button class="btn" style="border-radius: 20px;" type="submit">Create</button>
+  </form>
+</div>
+
+<script src="/static/admin/jodit_editor.min.js"></script>
+{{template "admin_scripts" }}
+<script src="/static/admin/all_models.js"></script>
+
+
+</body>
+</html>

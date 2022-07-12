@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Website Admin Page">
+  {{template "admin_head"}}
+  <link rel="stylesheet" href="/static/admin/jodit_editor.min.css">
+  <title>Admin - Single {{.model_name}}</title>
+</head>
+<body>
+{{ template "admin_nav" . }}
+{{$columns := .columns}}
+<div class="wrapper">
+  <a href="/admin/table/{{.model_name}}"><h1>{{.model_name}}</h1></a>
+  <form id="myform" data-model="{{.model_name}}" data-id="{{.id}}" autocomplete="off">
+    {{range $key,$value := .model}}
+    <div class="form-group">
+      <label for="{{$key}}">{{$key}}:</label><br>
+      
+      {{if eq $key "id" "_id"  "password" "uuid" }}
+      <input type="text" id="{{$key}}" name="{{$key}}" class='form-control' value="{{$value}}" disabled>
+      {{else if or (contains (index $columns $key) "timestamp") (contains $key "_at")}}
+      <input name="{{$key}}" id="{{$key}}" value="{{timeFormat $value}}" type="datetime-local" class='form-control input'>
+      {{else if eq $key "image" "photo"}}
+      <input name="{{$key}}" type="file" class='form-control input'>
+      <img src="{{$value}}" alt="image" width="100px" style="border-radius: 20px;">
+      {{else if and (contains (index $columns $key) "int") (eq $value 0 1) (not (contains $key "id"))}}
+      <div class="form-check form-switch">
+        <input style="height: 30px;" type="checkbox" name="{{$key}}" id="{{$key}}" class="form-check-input input" {{if $value}}checked{{end}}>
+      </div>
+      {{else if or (eq (index $columns $key) "text") (contains $key "content" "body")}}
+      <div id="editor" data-key="{{$key}}" data-val="{{$value}}"></div>
+      {{else}}
+        <input type="text" id="{{$key}}" name="{{$key}}" class='form-control input' value="{{$value}}">
+      {{end}}
+    </div>
+    <br>
+    {{end}}
+    
+    <button class="btn" style="border-radius: 20px;" type="submit">Update</button>
+  </form>
+
+</div>
+<br>
+
+
+
+{{template "admin_scripts" }}
+<script src="/static/admin/jodit_editor.min.js"></script>
+<script src="/static/admin/single_model.js"></script>
+
+
+</body>
+</html>
