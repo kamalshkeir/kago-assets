@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{template "admin_head"}}
+    <style>
+        .container {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        p {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            color: black;
+        }
+    </style>
+    <title>Logs</title>
+</head>
+<body>
+    {{ template "admin_nav" . }}
+    <h1 style="text-align: center;font-size: 5vw;margin-top: 30px;">Logs</h1>
+    <div class="container"></div>
+<script>
+    let container = document.querySelector(".container");   
+    let host = window.location.host;
+    var sse = new EventSource("/sse/logs");
+    let lastMessage = "";
+    sse.onmessage = (e) => {
+        if (e.data !== lastMessage) {
+            lastMessage=e.data;
+            let p = document.createElement("p");
+            p.innerText = e.data;
+            if (lastMessage.includes("[404]") || lastMessage.includes("[500]")) {
+                p.style.background="red";
+                p.style.color="white";
+            } else if (lastMessage.includes("[200]")) {
+                p.style.background="green";
+                p.style.color="white";
+            }
+            container.prepend(p);
+        } 
+    }
+</script>
+</body>
+</html>
