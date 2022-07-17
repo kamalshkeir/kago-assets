@@ -20,6 +20,7 @@
             padding: 10px;
             border-radius: 10px;
             color: black;
+            font-weight: bold;
         }
     </style>
     <title>Logs</title>
@@ -38,13 +39,33 @@
             lastMessage=e.data;
             let p = document.createElement("p");
             p.innerText = e.data;
-            if (lastMessage.includes("[404]") || lastMessage.includes("[500]")) {
-                p.style.background="red";
-                p.style.color="white";
-            } else if (lastMessage.includes("[200]")) {
-                p.style.background="green";
+
+            let successList = [200,"Success"];
+            let errorList = [400,404,500,"Error"];
+            let redirectList = [303,302,301,300,"Info"];
+            errorList.forEach(code => {
+                if (lastMessage.includes(`[${code}]`)) {
+                    p.style.background="red";
+                    p.style.color="white";
+                }
+            })
+            redirectList.forEach(code => {
+                if (lastMessage.includes(`[${code}]`)) {
+                    p.style.background="blue";
+                    p.style.color="white";
+                }
+            })
+            successList.forEach(code => {
+                if (lastMessage.includes(`[${code}]`)) {
+                    p.style.background="green";
+                    p.style.color="white";
+                }
+            })
+            if (lastMessage.includes("[Warn]")) {
+                p.style.background="orange";
                 p.style.color="white";
             }
+            
             container.prepend(p);
         } 
     }
