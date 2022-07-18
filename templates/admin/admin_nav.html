@@ -16,6 +16,9 @@
 
         {{if .is_authenticated}}
         <li>
+          <a {{if eq .request.URL.Path "/logs" }}class="active"{{end}} href="/logs">Logs</a>
+        </li>
+        <li>
           <a href="/admin/logout">Logout</a>
         </li>
         {{end}}
