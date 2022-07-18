@@ -40,9 +40,9 @@
             let p = document.createElement("p");
             p.innerText = e.data;
 
-            let successList = [200,"Success"];
-            let errorList = [400,404,500,"Error"];
-            let redirectList = [303,302,301,300,"Info"];
+            let successList = [200,"SUCCESS"];
+            let errorList = [400,404,500,"ERROR"];
+            let redirectList = [303,302,301,300,"INFO"];
             errorList.forEach(code => {
                 if (lastMessage.includes(`[${code}]`)) {
                     p.style.background="red";
@@ -61,7 +61,7 @@
                     p.style.color="white";
                 }
             })
-            if (lastMessage.includes("[Warn]")) {
+            if (lastMessage.includes("[WARN]")) {
                 p.style.background="orange";
                 p.style.color="white";
             }
