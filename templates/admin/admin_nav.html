@@ -15,14 +15,21 @@
         </li>
 
         {{if .is_authenticated}}
-        {{if and .logs .user.is_admin}}
-        <li>
-          <a {{if eq .request.URL.Path "/logs" }}class="active"{{end}} href="/logs">Logs</a>
-        </li>
-        {{end}}
-        <li>
-          <a href="/admin/logout">Logout</a>
-        </li>
+            {{if and .logs .user.is_admin}}
+              <li>
+                <a {{if eq .request.URL.Path "/logs" }}class="active"{{end}} href="/logs">Logs</a>
+              </li>
+            {{end}}
+
+            <li>
+              <a href="/admin/logout">Logout</a>
+            </li>
+            
+            {{if .user.email}}
+              <li>
+                <span>Hello {{.user.email}}</span>
+              </li>
+            {{end}}
         {{end}}
     </ul>
   </nav>
