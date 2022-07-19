@@ -1,102 +1,119 @@
 {
-	"basePath": "/",
-	"definitions": {
-		"LoginRequest": {
-			"example": {
-				"email": "bla@gmail.com",
-				"password": "blabla"
-			},
-			"properties": {
-				"email": {
-					"description": "email here",
-					"required": true,
-					"type": "string"
-				},
-				"password": {
-					"description": "password goes here",
-					"format": "password",
-					"required": true,
-					"type": "string"
-				}
-			},
-			"type": "object"
-		}
-	},
-	"externalDocs": {
-		"description": "Send me email on kamalshkeir@yahoo.fr",
-		"url": "https://kamalshkeir.github.io"
-	},
+	"openapi": "3.0.1",
 	"host": "localhost:9313",
 	"info": {
 		"contact": {
-			"email": "kamalshkeir@yahoo.fr",
+			"email": "kamalshkeir@gmail.com",
 			"url": "https://kamalshkeir.github.io"
 		},
-		"description": "KamFram docs, ready to use with internal 'docs' library",
-		"title": "KamFram Docs",
+		"description": "KaGo docs, ready to use with internal 'docs' library",
+		"title": "KaGo Docs",
 		"version": "1.0.0"
 	},
+	"externalDocs": {
+		"description": "Send me email on kamalshkeir@gmail.com",
+		"url": "https://kamalshkeir.github.io"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:9313"
+		}
+	],
+	"tags": [
+		{
+			"name": "Auth",
+			"description": "Authentication Api"
+		}
+	],
 	"paths": {
 		"/admin/login": {
 			"get": {
-				"description": "Login HTML REQUEST",
-				"parameters": [],
+				"tags": [
+					"Auth"
+				],
+				"summary": "login html page",
+				"operationId": "login-html",
+				"requestBody": {},
+				"description": "Login Page",
 				"responses": {
 					"200": {
 						"description": "OK"
 					},
 					"404": {
-						"description": "Not Found"
+						"description": "NOT FOUND"
+					},
+					"500": {
+						"description": "INTERNAL SERVER ERROR"
 					}
 				},
-				"summary": "Login HTML REQUEST",
-				"tags": [
-					"Auth"
+				"produces": [
+					"text/html"
 				]
 			},
 			"post": {
-				"consumes": [
-					"application/json"
+				"tags": [
+					"Auth"
 				],
-				"description": "login post method docs",
-				"operationId": "d0823e60-af99-4b35-b19e-1f3f36c2b8ca",
-				"parameters": [
-					{
-						"description": "login post method docs",
-						"in": "body",
-						"name": "Request body",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/LoginRequest"
+				"summary": "login post request",
+				"operationId": "login-post",
+				"requestBody": {
+					"description": "email and password for login",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/User",
+								"items": {}
+							}
 						}
-					}
-				],
-				"produces": [
-					"application/json"
-				],
+					},
+					"required": true
+				},
+				"description": "Login Post Request",
 				"responses": {
 					"200": {
 						"description": "OK"
 					},
 					"404": {
-						"description": "Not Found"
+						"description": "NOT FOUND"
+					},
+					"500": {
+						"description": "INTERNAL SERVER ERROR"
 					}
 				},
-				"summary": "login post method docs",
-				"tags": [
-					"Auth"
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
 				]
 			}
 		}
 	},
-	"schemes": [
-		"http"
-	],
-	"swagger": "2.0",
-	"tags": [
-		{
-			"description": "Authentication URLS",
-			"name": "Auth"
+	"components": {
+		"schemas": {
+			"User": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"required": true,
+						"type": "string",
+						"example": "example@xyz.com",
+						"items": {}
+					},
+					"password": {
+						"required": true,
+						"type": "string",
+						"format": "password",
+						"example": "************",
+						"items": {}
+					}
+				},
+				"xml": {},
+				"required": [
+					"email",
+					"password"
+				]
+			}
 		}
-	]
+	}
 }
