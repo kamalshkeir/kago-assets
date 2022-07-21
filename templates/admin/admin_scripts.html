@@ -1,54 +1,5 @@
 {{define "admin_scripts"}}
-<script src="/static/tools/getandpost.js"></script>
-<script src="/static/tools/notification.js"></script>
-<script>
-    var isChromium = window.chrome;
-    var winNav = window.navigator;
-    var vendorName = winNav.vendor;
-    var isOpera = typeof window.opr !== "undefined";
-    var isIEedge = winNav.userAgent.indexOf("Edg") > -1;
-    var isIOSChrome = winNav.userAgent.match("CriOS");
-
-    if (isIOSChrome) {
-    // is Google Chrome on IOS
-    } else if(
-    isChromium !== null &&
-    typeof isChromium !== "undefined" &&
-    vendorName === "Google Inc." &&
-    isOpera === false &&
-    isIEedge === false
-    ) {
-        // is Google Chrome
-        window.addEventListener('load', () => {
-        if ('serviceWorker' in navigator) {
-                    document.querySelector("head").innerHTML += `
-                <link href="/manifest.webmanifest" rel="manifest">
-                <meta content="yes" name="mobile-web-app-capable">
-                <meta content="Go APP" name="application-name">
-                <meta content="#0A0302" name="theme-color">
-                <meta content="yes" name="apple-mobile-web-app-capable">
-                <meta content="Go APP" name="apple-mobile-web-app-title">
-                <meta content="default" name="apple-mobile-web-app-status-bar-style">
-                <meta content="#ffffff" name="msapplication-TileColor">
-                `;
-                navigator.serviceWorker.register('/sw.js')
-                .then((reg) => {
-                    // registration worked
-                    //console.log('Registration succeeded. Scope is ' + reg.scope);
-                }).catch((error) => {
-                    // registration failed
-                    console.log('Registration failed with ' + error);
-                });
-        }
-        })
-    } else { 
-        // not Google Chrome 
-    }
-    
-</script>
-
-
-
+    {{template "pwa"}}
 </body>
 </html>
 {{end}}
