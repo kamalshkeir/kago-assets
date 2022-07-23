@@ -111,15 +111,15 @@
         {{end}}
 
         {{if eq $col "id" "ID" "Id" "_id"}}
-        {{else if or (contains $type "timestamp") (finishWith $col "at")}}
+        {{else if or (contains $type "time" "timestamp" "timez")}}
         <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
         {{else if eq $col "uuid"}}
         <input name="{{$col}}" id="{{$col}}" type="text" class='form-control input' value="{{generateUUID}}" disabled>
-        {{else if eq $col "password"}}
+        {{else if contains $col "password" "pass"}}
         <input name="{{$col}}" id="{{$col}}" type="password" class='form-control input'>
         {{else if or (eq $type "text") (contains $col "content" "body")}}
         <div id="editor" data-key="{{$col}}" data-val=""></div>
-        {{else if and (startWith $col "is") (startWith $type "int")}}
+        {{else if and (contains $type "bool") (startWith $col "is") (startWith $type "int")}}
         <div class="form-check form-switch">
           <input style="height: 30px;" type="checkbox" name="{{$col}}" id="{{$col}}" class="form-check-input input">
         </div>
