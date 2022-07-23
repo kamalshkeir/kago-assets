@@ -111,7 +111,7 @@
         {{end}}
 
         {{if eq $col "id" "ID" "Id" "_id"}}
-        {{else if or (contains $type "time" "timestamp" "timez")}}
+        {{else if or (contains $type "time" "timestamp" "timez") (contains $col "_" "at")}}
         <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
         {{else if eq $col "uuid"}}
         <input name="{{$col}}" id="{{$col}}" type="text" class='form-control input' value="{{generateUUID}}" disabled>
