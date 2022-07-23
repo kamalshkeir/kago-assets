@@ -52,7 +52,7 @@
           {{range .rows}}
           <tr>
             {{range $key,$value := .}}      
-              {{if and (eq $col "id") (not (contains $col "_")) }}
+              {{if and (eq $key "id") (not (contains $key "_")) }}
                 <td>
                   <p style="overflow-wrap:break-word;max-width: 20vw;">
                     <a href="/admin/get/{{$.model_name}}/{{$value}}">{{$value}}</a>
