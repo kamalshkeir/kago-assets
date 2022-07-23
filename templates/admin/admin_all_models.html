@@ -64,13 +64,13 @@
                 </td>
               {{else if and (startWith (index $columns $key) "int") (startWith $key "is") (isBool $value)}}
                 <td>
-                  {{$i = inc $i}}
+                  {{$i = add $i 1}}
                   <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if isTrue $value}}checked{{end}} disabled>
                   <label style="display: none;" for="check-{{$i}}" >Checkbox</label>          
                 </td>
               {{else if and (startWith (index $columns $key) "str") (startWith $key "is") (isBool $value)}}
                 <td>
-                  {{$i = inc $i}}
+                  {{$i = add $i 1}}
                   <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if isTrue $value}}checked{{end}} disabled>
                   <label style="display: none;" for="check-{{$i}}" >Checkbox</label>          
                 </td>
