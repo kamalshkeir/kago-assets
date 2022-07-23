@@ -52,7 +52,7 @@
           {{range .rows}}
           <tr>
             {{range $key,$value := .}}      
-              {{if eq $key "id" "_id" "Id" "ID" }}
+              {{if and (eq $col "id") (not (contains $col "_")) }}
                 <td>
                   <p style="overflow-wrap:break-word;max-width: 20vw;">
                     <a href="/admin/get/{{$.model_name}}/{{$value}}">{{$value}}</a>
@@ -105,12 +105,12 @@
   <form id="myform">
     {{range $col,$type := .columns}}
     <div class="form-group">
-      {{if contains "id"}}
+      {{if and (eq $col "id") (not (contains $col "_"))}}
       {{else}}
         <label for="{{$col}}">{{$col}}:</label><br>
       {{end}}
 
-      {{if contains "id"}}
+      {{if and (eq $col "id") (not (contains $col "_"))}}
       {{else if or (contains $type "time" "timestamp") (and (contains $col "at") (eq $dbType "sqlite")) }}
       <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
       {{else if contains $col "uuid"}}
