@@ -103,34 +103,34 @@
   </div>
   
   <form id="myform">
-      {{range $col,$type := .columns}}
-      <div class="form-group">
-        {{if eq $col "id" "ID" "Id" "_id"}}
-        {{else}}
-          <label for="{{$col}}">{{$col}}:</label><br>
-        {{end}}
-
-        {{if eq $col "id" "ID" "Id" "_id"}}
-        {{else if or (contains $type "time" "timestamp" "timez") (contains $col "_" "at")}}
-        <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
-        {{else if eq $col "uuid"}}
-        <input name="{{$col}}" id="{{$col}}" type="text" class='form-control input' value="{{generateUUID}}" disabled>
-        {{else if contains $col "password" "pass"}}
-        <input name="{{$col}}" id="{{$col}}" type="password" class='form-control input'>
-        {{else if or (eq $type "text") (contains $col "content" "body")}}
-        <div id="editor" data-key="{{$col}}" data-val=""></div>
-        {{else if and (contains $type "bool") (startWith $col "is") (startWith $type "int")}}
-        <div class="form-check form-switch">
-          <input style="height: 30px;" type="checkbox" name="{{$col}}" id="{{$col}}" class="form-check-input input">
-        </div>
-        {{else}}
-          <input type="text" id="{{$col}}" name="{{$col}}" class='form-control input'>
-        {{end}}       
-      </div>
-      <br>
+    {{range $col,$type := .columns}}
+    <div class="form-group">
+      {{if contains "id"}}
+      {{else}}
+        <label for="{{$col}}">{{$col}}:</label><br>
       {{end}}
-    <button class="btn" style="border-radius: 20px;" type="submit">Create</button>
-  </form>
+
+      {{if contains "id"}}
+      {{else if or (contains $type "time" "timestamp") (and (contains $col "at") (eq $dbType "sqlite")) }}
+      <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
+      {{else if contains $col "uuid"}}
+      <input name="{{$col}}" id="{{$col}}" type="text" class='form-control input' value="{{generateUUID}}" disabled>
+      {{else if contains $col "password" "pass"}}
+      <input name="{{$col}}" id="{{$col}}" type="password" class='form-control input'>
+      {{else if or (eq $type "text") (contains $col "content" "body" "editor")}}
+      <div id="editor" data-key="{{$col}}" data-val=""></div>
+      {{else if or (contains $type "bool") (and (startWith $col "is") (startWith $type "int"))}}
+      <div class="form-check form-switch">
+        <input style="height: 30px;" type="checkbox" name="{{$col}}" id="{{$col}}" class="form-check-input input">
+      </div>
+      {{else}}
+        <input type="text" id="{{$col}}" name="{{$col}}" class='form-control input'>
+      {{end}}       
+    </div>
+    <br>
+    {{end}}
+  <button class="btn" style="border-radius: 20px;" type="submit">Create</button>
+</form>
 </div>
 
 <script src="/static/admin/jodit_editor.min.js"></script>
