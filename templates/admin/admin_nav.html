@@ -7,17 +7,17 @@
     
     <ul>
         <li>
-          <a {{if eq .request.URL.Path "/" }}class="active"{{end}} href="/">Home</a>
+          <a {{if eq .Request.URL.Path "/" }}class="active"{{end}} href="/">Home</a>
         </li>
 
         <li>
-          <a {{if contains .request.URL.Path "/admin" }}class="active"{{end}} href="/admin">Admin</a>
+          <a {{if contains .Request.URL.Path "/admin" }}class="active"{{end}} href="/admin">Admin</a>
         </li>
 
-        {{if .is_authenticated}}
-            {{if and .logs .user.is_admin}}
+        {{if .IsAuthenticated}}
+            {{if and .Logs .User.IsAdmin}}
               <li>
-                <a {{if eq .request.URL.Path "/logs" }}class="active"{{end}} href="/logs">Logs</a>
+                <a {{if eq .Request.URL.Path "/logs" }}class="active"{{end}} href="/logs">Logs</a>
               </li>
             {{end}}
 
@@ -25,9 +25,9 @@
               <a href="/admin/logout">Logout</a>
             </li>
             
-            {{if .user.email}}
+            {{if .User.Email}}
               <li>
-                <span>Hello {{.user.email}}</span>
+                <span>Hello {{.User.Email}}</span>
               </li>
             {{end}}
         {{end}}

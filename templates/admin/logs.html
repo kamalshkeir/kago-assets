@@ -33,9 +33,23 @@
     let container = document.querySelector(".container");   
     let host = window.location.host;
     var sse = new EventSource("/sse/logs");
+    let previousMessage = "";
     let lastMessage = "";
     sse.onmessage = (e) => {
-        if (e.data !== lastMessage) {
+        let paras = document.querySelectorAll(".container p");
+        let different=true;
+        let i;
+        paras.forEach(para => {
+            i++
+            if (para.textContent === e.data) {
+                different =false;
+            }
+            if (i > 3) {
+                return
+            }
+        })
+
+        if (different || paras.length === 0) {
             lastMessage=e.data;
             let p = document.createElement("p");
             p.innerText = e.data;
