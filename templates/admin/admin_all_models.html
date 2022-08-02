@@ -62,7 +62,7 @@
                 <td style="max-width: 20vw;">
                   <img src="{{$value}}" alt="image">
                 </td>
-              {{else if and (startWith (index $columns $key) "int") (startWith $key "is") (isBool $value)}}
+              {{else if contains (index $columns $key) "bool"}}
                 <td>
                   {{$i = add $i 1}}
                   <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if isTrue $value}}checked{{end}} disabled>
@@ -105,21 +105,21 @@
   <form id="myform">
     {{range $col,$type := .columns}}
     <div class="form-group">
-      {{if and (eq $col "id") (not (contains $col "_"))}}
+      {{if and (eq $col "id")}}
       {{else}}
         <label for="{{$col}}">{{$col}}:</label><div style="margin: 10px 0 10px 0;"></div>
       {{end}}
 
-      {{if and (eq $col "id") (not (contains $col "_"))}}
-      {{else if or (contains $type "time" "timestamp") (and (contains $col "at") (eq $dbType "sqlite")) }}
+      {{if and (eq $col "id")}}
+      {{else if or (contains $type "time" "timestamp")}}
       <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
       {{else if contains $col "uuid"}}
       <input name="{{$col}}" id="{{$col}}" type="text" class='form-control input' value="{{generateUUID}}" disabled>
       {{else if contains $col "password" "pass"}}
       <input name="{{$col}}" id="{{$col}}" type="password" class='form-control input'>
-      {{else if or (eq $type "text") (contains $col "content" "body" "editor")}}
+      {{else if or (eq $type "text")}}
       <div id="editor" data-key="{{$col}}" data-val=""></div>
-      {{else if or (contains $type "bool") (and (startWith $col "is") (startWith $type "int"))}}
+      {{else if (contains $type "bool")}}
       <div class="form-check form-switch">
         <input style="height: 30px;" type="checkbox" name="{{$col}}" id="{{$col}}" class="form-check-input input">
       </div>

@@ -21,12 +21,12 @@
       
       {{if eq $key "id" "_id"  "password" "uuid" }}
       <input type="text" id="{{$key}}" name="{{$key}}" class='form-control' value="{{$value}}" disabled>
-      {{else if or (contains (index $columns $key) "timestamp") (contains $key "_at")}}
+      {{else if or (contains (index $columns $key) "time" "Time")}}
       <input name="{{$key}}" id="{{$key}}" value="{{timeFormat $value}}" type="datetime-local" class='form-control input'>
       {{else if eq $key "image" "photo"}}
       <input name="{{$key}}" type="file" class='form-control input'>
       <img src="{{$value}}" alt="image" width="100px" style="border-radius: 20px;">
-      {{else if and (contains (index $columns $key) "int") (eq $value 0 1) (not (contains $key "id"))}}
+      {{else if (eq (index $columns $key) "bool")}}
       <div class="form-check form-switch">
         <input style="height: 30px;" type="checkbox" name="{{$key}}" id="{{$key}}" class="form-check-input input" {{if $value}}checked{{end}}>
       </div>
