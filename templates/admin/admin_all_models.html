@@ -107,7 +107,7 @@
     <div class="form-group">
       {{if and (eq $col "id") (not (contains $col "_"))}}
       {{else}}
-        <label for="{{$col}}">{{$col}}:</label><br>
+        <label for="{{$col}}">{{$col}}:</label><div style="margin: 10px 0 10px 0;"></div>
       {{end}}
 
       {{if and (eq $col "id") (not (contains $col "_"))}}
@@ -127,11 +127,11 @@
         <input type="text" id="{{$col}}" name="{{$col}}" class='form-control input'>
       {{end}}       
     </div>
-    <br>
+    <div style="margin: 10px 0 10px 0;"></div>
     {{end}}
-    <br>
+    <div style="margin: 10px 0 10px 0;"></div>
   <button class="btn" style="border-radius: 20px;" type="submit">Create</button>
-  <br>
+  <div style="margin: 10px 0 10px 0;"></div>
 </form>
 </div>
 

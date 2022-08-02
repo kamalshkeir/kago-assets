@@ -17,7 +17,7 @@
   <form id="myform" data-model="{{.model_name}}" data-id="{{.id}}" autocomplete="off">
     {{range $key,$value := .model}}
     <div class="form-group">
-      <label for="{{$key}}">{{$key}}:</label><br>
+      <label for="{{$key}}">{{$key}}:</label><div style="margin: 10px 0 10px 0;"></div>
       
       {{if eq $key "id" "_id"  "password" "uuid" }}
       <input type="text" id="{{$key}}" name="{{$key}}" class='form-control' value="{{$value}}" disabled>
@@ -36,14 +36,14 @@
         <input type="text" id="{{$key}}" name="{{$key}}" class='form-control input' value="{{$value}}">
       {{end}}
     </div>
-    <br>
+    <div style="margin: 10px 0 10px 0;"></div>
     {{end}}
     
     <button class="btn" style="border-radius: 20px;" type="submit">Update</button>
   </form>
 
 </div>
-<br>
+<div style="margin: 10px 0 10px 0;"></div>
 
 
 
