@@ -12,6 +12,8 @@
 <body>
 {{ template "admin_nav" . }}
 {{$dbType := .dbType}}
+
+{{$pk := .pk}}
 <div class="wrapper">
   <div class="head-container">
     <a href="/admin">
@@ -52,7 +54,7 @@
           {{range .rows}}
           <tr>
             {{range $key,$value := .}}      
-              {{if and (eq $key "id") (not (contains $key "_")) }}
+              {{if eq $key $pk }}
                 <td>
                   <p style="overflow-wrap:break-word;max-width: 20vw;">
                     <a href="/admin/get/{{$.model_name}}/{{$value}}">{{$value}}</a>
@@ -105,12 +107,12 @@
   <form id="myform">
     {{range $col,$type := .columns}}
     <div class="form-group">
-      {{if and (eq $col "id")}}
+      {{if eq $col $pk}}
       {{else}}
         <label for="{{$col}}">{{$col}}:</label><div style="margin: 10px 0 10px 0;"></div>
       {{end}}
 
-      {{if and (eq $col "id")}}
+      {{if eq $col $pk}}
       {{else if or (contains $type "time" "timestamp")}}
       <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
       {{else if contains $col "uuid"}}

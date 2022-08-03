@@ -387,6 +387,9 @@ form .submit-btn:hover {
 /* SINGLE MODEL ADMIN */
 #myform {
     width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 #myform .form-group img {
     margin-top: 10px;
