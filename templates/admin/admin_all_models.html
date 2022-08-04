@@ -85,7 +85,7 @@
               {{end}} 
             {{end}}
             <td>
-              <button class="btn btn-danger deleteBtn" data-id="{{.id}}">X</button>
+              <button class="btn btn-danger deleteBtn" data-id="{{index . $pk}}">X</button>
             </td>
           </tr>
           {{end}}      
