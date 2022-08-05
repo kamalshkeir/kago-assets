@@ -13,6 +13,7 @@
 {{ template "admin_nav" . }}
 
 {{$columns := .columns}}
+{{$dbcolumns := .dbcolumns}}
 
 {{$pk := .pk}}
 
@@ -34,7 +35,7 @@
       <div class="form-check form-switch">
         <input style="height: 30px;" type="checkbox" name="{{$key}}" id="{{$key}}" class="form-check-input input" {{if $value}}checked{{end}}>
       </div>
-      {{else if or (eq (index $columns $key) "text") (contains $key "content" "body")}}
+      {{else if contains (index $dbcolumns $key) "text"}}
       <div id="editor" data-key="{{$key}}" data-val="{{$value}}"></div>
       {{else}}
         <input type="text" id="{{$key}}" name="{{$key}}" class='form-control input' value="{{$value}}">
