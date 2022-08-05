@@ -12,6 +12,7 @@
 <body>
 {{ template "admin_nav" . }}
 {{$dbType := .dbType}}
+{{$dbcolumns := .dbcolumns}}
 
 {{$pk := .pk}}
 <div class="wrapper">
@@ -113,15 +114,15 @@
       {{end}}
 
       {{if eq $col $pk}}
-      {{else if or (contains $type "time" "timestamp")}}
+      {{else if contains $type "time" "timestamp"}}
       <input name="{{$col}}" id="{{$col}}" type="datetime-local" class='form-control input'>
       {{else if contains $col "uuid"}}
       <input name="{{$col}}" id="{{$col}}" type="text" class='form-control input' value="{{generateUUID}}" disabled>
       {{else if contains $col "password" "pass"}}
       <input name="{{$col}}" id="{{$col}}" type="password" class='form-control input'>
-      {{else if or (eq $type "text")}}
+      {{else if contains (index $dbcolumns $col) "text"}}
       <div id="editor" data-key="{{$col}}" data-val=""></div>
-      {{else if (contains $type "bool")}}
+      {{else if contains $type "bool"}}
       <div class="form-check form-switch">
         <input style="height: 30px;" type="checkbox" name="{{$col}}" id="{{$col}}" class="form-check-input input">
       </div>
