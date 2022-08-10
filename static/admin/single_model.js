@@ -6,20 +6,25 @@ let editor;
 
 // initialise editor if exist on page
 if (document.body.contains(document.getElementById("editor"))) {
-    editor = new Jodit('#editor');
+    editor = Jodit.make('#editor');
     editor.value = document.getElementById("editor").dataset.val;
 }
 
+
+
+var data = new FormData();
+
 // update form handler
-let callbackPost = (data) => {
-    if(data.success) {
-        notification.show(data.success,"success");
-    }else if (data.error) {
-        notification.show(data.error,"error");
+let callbackPost = (d) => {
+    if(d.success) {
+        notification.show(d.success,"success");
+    }else if (d.error) {
+        notification.show(d.error,"error");
     }
+    data = new FormData();
 }
 
-let data = new FormData();
+
 inputs.forEach((input) => {
     input.addEventListener("change",(e) => {
         e.preventDefault();

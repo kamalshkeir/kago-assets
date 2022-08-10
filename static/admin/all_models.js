@@ -14,7 +14,7 @@ let html = document.querySelector("html");
 // initialise editor if exist on page
 let editor;
 if (document.body.contains(document.getElementById("editor"))) {
-  editor = new Jodit('#editor');
+  editor = Jodit.make('#editor');
   editor.value = document.getElementById("editor").dataset.val;
 }
 
