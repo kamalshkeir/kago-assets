@@ -170,6 +170,9 @@ let handlepostScroll = (data) => {
           key = snakeCase(key)
           let content;
           let td = document.createElement("td");
+          if (row[key].length > 50) {
+            row[key]=row[key].substring(0,49)+"..."
+          }
           switch (key) {
             case "id":
               td.innerHTML = `
@@ -231,7 +234,7 @@ let handlepostScroll = (data) => {
                           ${row[key]}
                       </p>
                     `;
-                  } else if ((row[key] == '0' || row[key] == '1') && key.includes("is"))  {
+                  } else if ((row[key] == '0' || row[key] == '1') || key.includes("is"))  {
                     let checked="";
                     if (row[key] == '1') {
                       checked="checked"
