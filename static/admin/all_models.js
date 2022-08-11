@@ -170,9 +170,6 @@ let handlepostScroll = (data) => {
           key = snakeCase(key)
           let content;
           let td = document.createElement("td");
-          if (row[key].length > 50) {
-            row[key]=row[key].substring(0,49)+"..."
-          }
           switch (key) {
             case "id":
               td.innerHTML = `
@@ -229,11 +226,17 @@ let handlepostScroll = (data) => {
                   break;
                 case "string":
                   if (isNaN(row[key])) {
+                    const span = document.createElement('span');
+                    span.innerHTML = row[key];
+                    if (row[key].length > 50) {
+                      truncateNode(span, 50);
+                    }
+                    
                     td.innerHTML = `
-                      <p style="overflow-wrap:break-word;max-width: 20vw;">
-                          ${row[key]}
-                      </p>
-                    `;
+                    <p style="overflow-wrap:break-word;max-width: 20vw;">
+                        ${span.textContent}
+                    </p>
+                  `;
                   } else if ((row[key] == '0' || row[key] == '1') || key.includes("is"))  {
                     let checked="";
                     if (row[key] == '1') {
@@ -311,3 +314,17 @@ observer.observe(lastRow);
 
 /* Helpers */
 const snakeCase = (str) => str.split(/(?=[A-Z])/).join('_').toLowerCase();
+
+
+function truncateNode(node, limit) {
+  if (node.nodeType === Node.TEXT_NODE) {
+    node.textContent = node.textContent.substring(0, limit);
+    return limit - node.textContent.length;
+  }
+
+  node.childNodes.forEach((child) => {
+    limit = truncateNode(child, limit);
+  });
+
+  return limit;
+}
