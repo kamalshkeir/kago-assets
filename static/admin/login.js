@@ -3,7 +3,7 @@ let callbackPOST = (data) => {
     if (data.success) {
         window.location.href = "/admin";
     } else if (data.error) {
-        notification.show(data.error,"error");
+        new Notification().show(data.error,"error");
     }
 }
 form.addEventListener("submit",(e) => {

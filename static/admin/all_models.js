@@ -51,7 +51,7 @@ let handlepostCreate = (data) => {
           modal.classList.remove('active');
           window.location.reload();
       }else if (data.error) {
-          notification.show(data.error,"error");
+        new Notification().show(data.error,"error");
       }
 }
 
@@ -89,13 +89,14 @@ form.addEventListener("submit",(e) => {
 
 /* IMPORT EXPORT */
 exportBtn.addEventListener("click",(e) => {
-  confirm = window.confirm(`Tu veux vraiment exporter le tableau ${modelName} ?`)
-  if (confirm) {
-    e.preventDefault();
-    window.location.href = `/admin/export/${modelName}`;
-  } else {
-    notification.show("Exportation annuler.")
-  }
+  ask(`Voulez vous confirmer l'exportation du tableau ${modelName} ?`).then(confirmed => {
+    if (confirmed) {
+      e.preventDefault();
+      window.location.href = `/admin/export/${modelName}`;
+    } else {
+      new Notification().show("Exportation annuler.")
+    }
+  })
 })
 
 importBtn.addEventListener("click",(e) => {
@@ -106,9 +107,9 @@ importBtn.addEventListener("click",(e) => {
 let callbackImport = (data) => {
   if(data) {
     if (data.success) {
-      notification.show(data.success,"success");
+      new Notification().show(data.success,"success");
     } else if (data.error) {
-      notification.show(data.error,"error");
+      new Notification().show(data.error,"error");
     }
   }
 }
@@ -127,25 +128,26 @@ importInput.addEventListener("change",() => {
 /* DELETE ROW */
 let handlepostDelete = (data) => {
       if(data.success) {
-          notification.show(data.success,"success");
+          new Notification().show(data.success,"success");
           document.querySelector(`.deleteBtn[data-id='${data.id}']`).closest('tr').remove();
       }else if (data.error) {
-          notification.show(data.error,"error");
+          new Notification().show(data.error,"error");
       }
 }
 
 let deleteFunc = (btn) => {
   let id = btn.dataset.id;
-  var c = window.confirm(`Are your sure u want to delete ?`);
-  if (c == true) {
-    postData(`/admin/delete/row`,{
-          "mission":"delete_row",
-          "model_name":modelName,
-          "id":id,
-    },handlepostDelete);
-  } else {
-    notification.show("DELETE WAS CANCELED.","info");
-  } 
+  ask(`Are your sure u want to delete ?`).then(confirmed => {
+    if (confirmed == true) {
+      postData(`/admin/delete/row`,{
+            "mission":"delete_row",
+            "model_name":modelName,
+            "id":id,
+      },handlepostDelete);
+    } else {
+      new Notification().show("<b>delete was canceled</b>","info");
+    } 
+  })
 }
 
 deletebtns.forEach((btn) => {
