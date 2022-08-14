@@ -2,13 +2,19 @@ let form = document.getElementById("myform");
 let model_name = form.dataset.model;
 let model_id = form.dataset.id;
 let inputs = document.querySelectorAll(".input");
-let editor;
+
 
 // initialise editor if exist on page
-if (document.body.contains(document.getElementById("editor"))) {
-    editor = Jodit.make('#editor');
-    editor.value = document.getElementById("editor").dataset.val;
-}
+document.querySelectorAll("textarea.editor").forEach((ed) => {
+    let e = Jodit.make(ed,{
+        useSearch: false,
+        enableDragAndDropFileToEditor: true,
+        uploader: {
+            "insertImageAsBase64URI": true
+        },
+    });
+    e.value = ed.dataset.val;
+});
 
 
 
@@ -46,10 +52,12 @@ inputs.forEach((input) => {
 
 form.addEventListener("submit",(e) => {
     e.preventDefault();
-    if (editor != null) {
-        let name = document.getElementById("editor").dataset.key;
-        data.append(name,editor.value)
-    } 
+    if (document.querySelectorAll("textarea.editor").length > 0) {
+        document.querySelectorAll("textarea.editor").forEach(ed => {
+            let name = ed.dataset.key;
+            data.append(name,ed.value);
+        })
+    }
     data.append("table",model_name);
     data.append("row_id",model_id);
     postFormData(`/admin/update/row`,data,callbackPost);

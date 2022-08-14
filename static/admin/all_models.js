@@ -12,13 +12,15 @@ let html = document.querySelector("html");
 
 
 // initialise editor if exist on page
-let editor;
-if (document.body.contains(document.getElementById("editor"))) {
-  editor = Jodit.make('#editor');
-  editor.value = document.getElementById("editor").dataset.val;
-}
-
-
+document.querySelectorAll("textarea.editor").forEach((ed) => {
+  Jodit.make(ed,{
+    enableDragAndDropFileToEditor: true,
+    useSearch: false,
+    uploader: {
+        "insertImageAsBase64URI": true
+    }
+  });
+})
 
 createBtn.addEventListener("click",(e) => {
   e.preventDefault();
@@ -78,9 +80,11 @@ form.addEventListener("submit",(e) => {
       data.append(name,val)
     }
   });
-  if (editor != null) {
-    let name = document.getElementById("editor").dataset.key;
-    data.append(name,editor.value)
+  if (document.querySelectorAll("textarea.editor").length > 0) {
+    document.querySelectorAll("textarea.editor").forEach(ed => {
+      let name = ed.dataset.key;
+      data.append(name,ed.value);
+    })
   }
   data.append("table",modelName)
   postFormData(`/admin/create/row`,data,handlepostCreate);

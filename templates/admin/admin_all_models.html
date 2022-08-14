@@ -115,7 +115,7 @@
       {{else if contains $col "password" "pass"}}
       <input name="{{$col}}" id="{{$col}}" type="password" class='form-control input'>
       {{else if contains (index $dbcolumns $col) "text"}}
-      <div id="editor" data-key="{{$col}}" data-val=""></div>
+      <textarea class="editor" data-key="{{$col}}"></textarea>
       {{else if contains $type "bool"}}
       <div class="form-check form-switch">
         <input style="height: 30px;" type="checkbox" name="{{$col}}" id="{{$col}}" class="form-check-input input">
