@@ -387,6 +387,8 @@ form .submit-btn:hover {
 /* SINGLE MODEL ADMIN */
 #myform {
     width: 80%;
+    max-height: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
