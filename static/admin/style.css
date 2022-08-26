@@ -270,7 +270,6 @@ form .submit-btn:hover {
     font-weight: 400;
     padding: 10px 20px;
     outline: none;
-    overflow: hidden;
     background: #1c1e21;
     color: white;
     border: 2px solid #1149ff;
@@ -387,7 +386,6 @@ form .submit-btn:hover {
 /* SINGLE MODEL ADMIN */
 #myform {
     width: 80%;
-    max-height: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -438,7 +436,7 @@ form .form-group textarea::placeholder{
 
 /* Modal */
 .modal {
-    width: 50%;
+    width: 75%;
     height: 50%;
     background-color: rgb(4, 15, 15); 
     color: white;
