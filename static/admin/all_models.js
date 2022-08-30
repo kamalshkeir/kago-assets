@@ -93,7 +93,7 @@ form.addEventListener("submit",(e) => {
 
 /* IMPORT EXPORT */
 exportBtn.addEventListener("click",(e) => {
-  ask(`Voulez vous confirmer l'exportation du tableau ${modelName} ?`).then(confirmed => {
+  ask(`Do you confirm export ${modelName} ?`).then(confirmed => {
     if (confirmed) {
       e.preventDefault();
       window.location.href = `/admin/export/${modelName}`;
@@ -301,7 +301,8 @@ const observer = new IntersectionObserver(entries => {
         "page_num":`${page}`,
       }),
       headers: {
-          "Content-type": "application/json; charset=UTF-8"
+          "Content-type": "application/json; charset=UTF-8",
+          "X-CSRF-Token":csrftoken
       }
     })
     .then(res => res.json())

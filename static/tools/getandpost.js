@@ -21,6 +21,7 @@ function postData(url, js_object, givenfunction) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
     if (csrftoken != null) {
+        csrftoken=getCookie("csrf_token")
         xhr.setRequestHeader('X-CSRF-Token',csrftoken);
     } 
     xhr.setRequestHeader('Content-Type','application/json');
@@ -56,6 +57,7 @@ function postFormData(url, form_data, givenfunction) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
     if (csrftoken != null) {
+        csrftoken=getCookie("csrf_token")
         xhr.setRequestHeader('X-CSRF-Token',csrftoken);
     } 
     xhr.onload = function(){
