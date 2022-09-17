@@ -68,7 +68,7 @@
               {{else if contains (index $columns $key) "bool"}}
                 <td>
                   {{$i = add $i 1}}
-                  {{if contains (index $dbcolumns $key) "int"}}
+                  {{if and (contains (index $dbcolumns $key) "int") (eq $dbType "mysql")}}
                     <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if eq $value "1"}}checked{{end}} disabled>
                     <label style="display: none;" for="check-{{$i}}" >Checkbox</label>          
                   {{else}}
