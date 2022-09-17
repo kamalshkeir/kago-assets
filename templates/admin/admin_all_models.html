@@ -68,8 +68,13 @@
               {{else if contains (index $columns $key) "bool"}}
                 <td>
                   {{$i = add $i 1}}
-                  <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if eq $value 1}}checked{{end}} disabled>
-                  <label style="display: none;" for="check-{{$i}}" >Checkbox</label>          
+                  {{if contains (index $dbcolumns $key) "int"}}
+                    <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if eq $value "1"}}checked{{end}} disabled>
+                    <label style="display: none;" for="check-{{$i}}" >Checkbox</label>          
+                  {{else}}
+                    <input id="check-{{$i}}" name="check-{{$i}}" type="checkbox" class="checkbox" {{if eq $value 1}}checked{{end}} disabled>
+                    <label style="display: none;" for="check-{{$i}}" >Checkbox</label>  
+                  {{end}}
                 </td>
               {{else}}
                   <td>
