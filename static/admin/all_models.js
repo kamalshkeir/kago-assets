@@ -8,7 +8,141 @@ let modal = document.querySelector(".modal");
 let modelName = document.getElementById("model-name").dataset.model;
 let form = document.getElementById("myform");
 let html = document.querySelector("html");
+let searchForm = document.querySelector("form.search-input");
+let searchInput = searchForm.querySelector("input");
 
+
+let handlePostSearch = (data) => {
+  document.querySelector(".tbody").innerHTML="";
+  if (data.rows != null) {
+    if (data.rows.length > 0) {
+      data.rows.forEach((row) => {
+        let tr = document.createElement("tr");
+        for (var key in row) {
+          key = snakeCase(key)
+          let content;
+          let td = document.createElement("td");
+          switch (key) {
+            case "id":
+              td.innerHTML = `
+              <p style="overflow-wrap:break-word;max-width: 20vw;">
+                    <a href="/admin/get/${modelName}/${row[key]}">${row[key]}</a>
+              </p>
+              `;
+              break;
+            case "image" || "photo" || "img" || "url":
+              td.innerHTML = `
+                    <img src="${row[key]}" alt="image">
+              `;
+              break;
+            default:
+              switch (typeof(row[key])) {
+                case "number":
+                  if ((!["id","Id","ID"].includes(key)) && (row[key] == 0 || row[key] == 1) && (!key.includes("_") || !key.includes("id"))) {
+                    if (row[key] == 1) {
+                      i++;
+                      td.innerHTML = `
+                        <input id="check-${i}" name="check-${i}" type="checkbox" class="checkbox" checked disabled>
+                        <label style="display: none;" for="check-${i}" >Checkbox</label> 
+                      `;
+                    } else if (row[key] == 0) {
+                      i++;
+                      td.innerHTML = `
+                        <input id="check-${i}" name="check-${i}" type="checkbox" class="checkbox" disabled>
+                        <label style="display: none;" for="check-${i}" >Checkbox</label> 
+                      `;
+                    } 
+                    break;
+                  } else if ((row[key] == 0 || row[key] == 1) && (key.includes("_") || key.includes("id"))) {
+                    td.innerHTML = `
+                      <p style="overflow-wrap:break-word;max-width: 20vw;">
+                        ${row[key]}
+                      </p>
+                    `;
+                  } 
+                  break;
+                case "boolean":
+                  if (row[key]) {
+                    i++;
+                    td.innerHTML = `
+                    <input id="check-${i}" name="check-${i}" type="checkbox" class="checkbox" checked disabled>
+                    <label style="display: none;" for="check-${i}" >Checkbox</label> 
+                  `;
+                  } else {
+                    i++;
+                    td.innerHTML = `
+                      <input id="check-${i}" name="check-${i}" type="checkbox" class="checkbox" disabled>
+                      <label style="display: none;" for="check-${i}" >Checkbox</label> 
+                    `;
+                  }
+                  break;
+                case "string":
+                  if (isNaN(row[key])) {
+                    const span = document.createElement('span');
+                    span.innerHTML = row[key];
+                    if (row[key].length > 50) {
+                      truncateNode(span, 50);
+                    }
+                    
+                    td.innerHTML = `
+                    <p style="overflow-wrap:break-word;max-width: 20vw;">
+                        ${span.textContent}
+                    </p>
+                  `;
+                  } else if ((row[key] == '0' || row[key] == '1') || key.includes("is"))  {
+                    let checked="";
+                    if (row[key] == '1') {
+                      checked="checked"
+                    }
+                    i++;
+                    td.innerHTML = `
+                      <input id="check-${i}" name="check-${i}" type="checkbox" class="checkbox" ${checked} disabled>
+                      <label style="display: none;" for="check-${i}" >Checkbox</label> 
+                    `;
+                  } 
+                  break;
+                default:
+                  td.innerHTML = `
+                    <p style="overflow-wrap:break-word;max-width: 20vw;">
+                        ${row[key]}
+                    </p>
+                  `;
+                  break;
+              }
+            
+          }
+          tr.insertAdjacentElement("beforeend",td);
+        }
+        let td_delete = document.createElement("td");
+        td_delete.innerHTML = `
+            <button class="btn btn-danger deleteBtn" data-id="${row.id}">X</button>
+          `;
+        tr.insertAdjacentElement("beforeend",td_delete);
+        document.querySelector(".tbody").appendChild(tr);
+        let del_btn = document.querySelector(`.deleteBtn[data-id='${row.id}']`);
+        del_btn.addEventListener("click",(e) => {
+          e.preventDefault();
+          deleteFunc(del_btn);
+        });
+      })
+    } else {
+      console.log("yes");
+      observer.unobserve(lastRow);
+    }
+  } else {
+    if (data.error) {
+      new Notification().show(data.error,"error");
+    }
+  }
+}
+
+searchForm.addEventListener("submit",(e) => {
+  e.preventDefault();
+  let data = searchInput.value;
+  postData(`/admin/table/${modelName}/search`,{
+      "query":data,
+  },handlePostSearch);
+})
 
 
 // initialise editor if exist on page

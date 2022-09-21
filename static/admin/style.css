@@ -588,4 +588,23 @@ body > div.wrapper > div.table-container > table > tbody > tr > td > p {
     margin-top: auto;
 }
 
+/* All models search */
+.search-input {
+    max-width: 450px;
+    min-width: 150px;
+    width: 100%;
+    margin-bottom: 40px;
+    display: flex;
+    gap: 2rem;
+}
+
+.search-input input {
+    width: 100%;
+    padding: 7px 12px;
+    border-radius: 7px;
+}
+
+.search-input button {
+    border-radius: 7px;
+}
 

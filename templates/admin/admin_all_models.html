@@ -16,6 +16,7 @@
 
 {{$pk := .pk}}
 <div class="wrapper">
+
   <div class="head-container">
     <a href="/admin">
       <h1 id="model-name" data-model="{{.model_name}}">{{.model_name}}</h1>
@@ -38,6 +39,12 @@
     </div>
     
   </div>
+
+  <form class="search-input">
+    <input type="text" placeholder="Search..." class="form-control input">
+    <button class="btn" type="submit">Search</button>
+  </form>
+
   {{$columns := .columns}}
   <div class="table-container">
     <table class="table">
