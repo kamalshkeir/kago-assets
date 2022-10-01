@@ -9,15 +9,16 @@ let modelName = document.getElementById("model-name").dataset.model;
 let form = document.getElementById("myform");
 let html = document.querySelector("html");
 let searchForm = document.querySelector("form.search-input");
-
+let page = 1;
 
 let handlePostSearch = (data) => {
   if (data.rows != null) {
+    page=1;
     document.querySelector(".tbody").innerHTML="";
     if (data.rows.length > 0) {
       data.rows.forEach((row) => {
         let tr = document.createElement("tr");
-        for (var key in row) {
+        data.cols.forEach((key) => {
           key = snakeCase(key)
           let content;
           let td = document.createElement("td");
@@ -111,7 +112,7 @@ let handlePostSearch = (data) => {
             
           }
           tr.insertAdjacentElement("beforeend",td);
-        }
+        }) 
         let td_delete = document.createElement("td");
         td_delete.innerHTML = `
             <button class="btn btn-danger deleteBtn" data-id="${row.id}">X</button>
@@ -123,11 +124,9 @@ let handlePostSearch = (data) => {
           e.preventDefault();
           deleteFunc(del_btn);
         });
+        observer.observe(document.querySelector(".box-inf-scroll"));
       })
-    } else {
-      console.log("yes");
-      observer.unobserve(lastRow);
-    }
+    } 
   } else {
     if (data.error) {
       new Notification().show(data.error,"error");
@@ -299,7 +298,6 @@ deletebtns.forEach((btn) => {
 
 /* Infinite Scroll */
 let lastRow = document.querySelector(".box-inf-scroll");
-let page = 1;
 let i = 10;
 
 let handlepostScroll = (data) => {
@@ -307,7 +305,7 @@ let handlepostScroll = (data) => {
     if (data.rows.length > 0) {
       data.rows.forEach((row) => {
         let tr = document.createElement("tr");
-        for (var key in row) {
+        data.cols.forEach(key => {
           key = snakeCase(key)
           let content;
           let td = document.createElement("td");
@@ -401,7 +399,8 @@ let handlepostScroll = (data) => {
             
           }
           tr.insertAdjacentElement("beforeend",td);
-        }
+        })
+        
         let td_delete = document.createElement("td");
         td_delete.innerHTML = `
             <button class="btn btn-danger deleteBtn" data-id="${row.id}">X</button>
@@ -415,7 +414,6 @@ let handlepostScroll = (data) => {
         });
       })
     } else {
-      console.log("yes");
       observer.unobserve(lastRow);
     }
   }
@@ -426,15 +424,19 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) {
       return;
-    }  
+    } 
     page++;
-
+    let data = {
+      "model_name":modelName,
+      "page_num":`${page}`
+    }; 
+    if (searchForm.orderby.value != "") {
+      data.orderby=searchForm.orderby.value;
+    }
+    
     fetch(`/admin/table/${modelName}`, {  
       method: "POST",
-      body: JSON.stringify({
-        "model_name":modelName,
-        "page_num":`${page}`,
-      }),
+      body: JSON.stringify(data),
       headers: {
           "Content-type": "application/json; charset=UTF-8",
           "X-CSRF-Token":csrftoken
