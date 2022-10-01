@@ -10,11 +10,16 @@
   <title>Admin - {{.model_name}}</title>
 </head>
 <body>
+
 {{ template "admin_nav" . }}
+
+
+{{$columns := .columns}}
 {{$dbType := .dbType}}
 {{$dbcolumns := .dbcolumns}}
-
+{{$columnsOrdered := .columnsOrdered}}
 {{$pk := .pk}}
+
 <div class="wrapper">
 
   <div class="head-container">
@@ -41,17 +46,19 @@
   </div>
 
   <form class="search-input">
-    <input type="text" placeholder="email='any' or id=5 ..." class="form-control input">
-    <button class="btn" type="submit">Search</button>
+    <input type="text" name="search" placeholder="{{$pk}}=1 or email='any'..." class="form-control input">
+    <span style="white-space: nowrap;margin: auto;">Order By:</span>
+    <input type="text" name="orderby" placeholder="-{{$pk}}" class="form-control input">
+    <button class="btn" type="submit" style="display: none;">Search</button>
   </form>
 
-  {{$columns := .columns}}
+  
   <div class="table-container">
     <table class="table">
         <thead>
           <tr>
-              {{range $col,$type := $columns}}
-                <th scope="col">{{$col}}</th>
+              {{range $columnsOrdered}}
+                <th scope="col">{{.}}</th>
               {{end}}
               <th scope="col">DELETE</th>
           </tr>
@@ -59,9 +66,10 @@
 
         {{$i := 0}}
         <tbody class="tbody">
-          {{range .rows}}
+          {{range $row := .rows}}
           <tr>
-            {{range $key,$value := .}}      
+            {{range $key := $columnsOrdered}} 
+            {{$value := index $row $key}}  
               {{if eq $key $pk }}
                 <td>
                   <p style="overflow-wrap:break-word;max-width: 20vw;">
@@ -112,7 +120,8 @@
   </div>
   
   <form id="myform">
-    {{range $col,$type := .columns}}
+    {{range $col := $columnsOrdered}}
+    {{$type := index $columns $col}}
     <div class="form-group">
       {{if eq $col $pk}}
       {{else}}

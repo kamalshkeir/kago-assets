@@ -9,12 +9,11 @@ let modelName = document.getElementById("model-name").dataset.model;
 let form = document.getElementById("myform");
 let html = document.querySelector("html");
 let searchForm = document.querySelector("form.search-input");
-let searchInput = searchForm.querySelector("input");
 
 
 let handlePostSearch = (data) => {
-  document.querySelector(".tbody").innerHTML="";
   if (data.rows != null) {
+    document.querySelector(".tbody").innerHTML="";
     if (data.rows.length > 0) {
       data.rows.forEach((row) => {
         let tr = document.createElement("tr");
@@ -138,9 +137,11 @@ let handlePostSearch = (data) => {
 
 searchForm.addEventListener("submit",(e) => {
   e.preventDefault();
-  let data = searchInput.value;
+  let data = searchForm.search.value;
+  let orderBy = searchForm.orderby.value;
   postData(`/admin/table/${modelName}/search`,{
       "query":data,
+      "orderby":orderBy,
   },handlePostSearch);
 })
 
@@ -232,7 +233,7 @@ exportBtn.addEventListener("click",(e) => {
       e.preventDefault();
       window.location.href = `/admin/export/${modelName}`;
     } else {
-      new Notification().show("Exportation annuler.")
+      new Notification().show("Exportation annuler.");
     }
   })
 })
