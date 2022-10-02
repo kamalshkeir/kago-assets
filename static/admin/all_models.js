@@ -124,7 +124,6 @@ let handlePostSearch = (data) => {
           e.preventDefault();
           deleteFunc(del_btn);
         });
-        observer.observe(document.querySelector(".box-inf-scroll"));
       })
     } 
   } else {
@@ -138,6 +137,9 @@ searchForm.addEventListener("submit",(e) => {
   e.preventDefault();
   let data = searchForm.search.value;
   let orderBy = searchForm.orderby.value;
+  if (data == "" && orderBy == "") {
+    data="1";
+  }
   postData(`/admin/table/${modelName}/search`,{
       "query":data,
       "orderby":orderBy,
@@ -427,14 +429,16 @@ const observer = new IntersectionObserver(entries => {
     } 
     page++;
     let data = {
-      "model_name":modelName,
-      "page_num":`${page}`
+      "page_num":`${page}`,
     }; 
     if (searchForm.orderby.value != "") {
       data.orderby=searchForm.orderby.value;
     }
+    if (searchForm.orderby.query != "") {
+      data.query=searchForm.search.value;
+    }
     
-    fetch(`/admin/table/${modelName}`, {  
+    fetch(`/admin/table/${modelName}/search`, {  
       method: "POST",
       body: JSON.stringify(data),
       headers: {
