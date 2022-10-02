@@ -137,13 +137,14 @@ searchForm.addEventListener("submit",(e) => {
   e.preventDefault();
   let data = searchForm.search.value;
   let orderBy = searchForm.orderby.value;
-  if (data == "" && orderBy == "") {
-    data="1";
+  let d= {};
+  if (data !== "") {
+    d.query=data;
   }
-  postData(`/admin/table/${modelName}/search`,{
-      "query":data,
-      "orderby":orderBy,
-  },handlePostSearch);
+  if (orderBy !== "") {
+    d.orderby=orderBy;
+  }
+  postData(`/admin/table/${modelName}/search`,d,handlePostSearch);
 })
 
 
